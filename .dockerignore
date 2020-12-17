@@ -1,0 +1,9 @@
+/.vscode
+/.git
+/.gitignore
+/.dockerignore
+/doc
+/Dockerfile*
+/docker-compose*.yml
+/*.sh
+/*.ps1
