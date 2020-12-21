@@ -12,5 +12,4 @@ pip-services3-commons
 pip-services3-components
 pip-services3-container
 pip-services3-rpc
-pip_services3_data
-# pip_services3_mongodb
+pip-beacons-sample-python
