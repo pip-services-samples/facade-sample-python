@@ -3,7 +3,7 @@ from pip_services3_commons.data import FilterParams
 from pip_services3_commons.refer import Descriptor
 from pip_services3_rpc.services import RestOperations
 
-from src.pip_services3_beacons.clients import BeaconsHttpClientV1
+from pip_beacons_sample_python.clients import BeaconsHttpClientV1
 
 
 class BeaconsOperations(RestOperations):

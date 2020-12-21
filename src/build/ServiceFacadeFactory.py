@@ -2,7 +2,7 @@
 
 from pip_services3_components.build.CompositeFactory import CompositeFactory
 
-from src.pip_services3_beacons.build.BeaconsServiceFactory import BeaconsServiceFactory
+from pip_beacons_sample_python.build.BeaconsServiceFactory import BeaconsServiceFactory
 
 
 class ServiceFacadeFactory(CompositeFactory):

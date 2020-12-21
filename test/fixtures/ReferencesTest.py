@@ -10,9 +10,9 @@ from pip_services3_rpc.build.DefaultRpcFactory import DefaultRpcFactory
 from src.build.ClientFacadeFactory import ClientFacadeFactory
 from src.build.FacadeFactory import FacadeFactory
 from src.build.ServiceFacadeFactory import ServiceFacadeFactory
-from src.pip_services3_beacons.clients.version1.BeaconsDirectClientV1 import BeaconsDirectClientV1
-from src.pip_services3_beacons.logic import BeaconsController
-from src.pip_services3_beacons.persistence.BeaconsFilePersistence import BeaconsFilePersistence
+from pip_beacons_sample_python.clients.version1.BeaconsDirectClientV1 import BeaconsDirectClientV1
+from pip_beacons_sample_python.logic import BeaconsController
+from pip_beacons_sample_python.persistence.BeaconsFilePersistence import BeaconsFilePersistence
 from src.services.version1.FacadeServiceV1 import FacadeServiceV1
 
 
