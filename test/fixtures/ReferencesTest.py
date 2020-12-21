@@ -7,13 +7,13 @@ from pip_services3_container.refer.ManagedReferences import ManagedReferences
 # from pip_services3_mongodb.build.DefaultMongoDbFactory import DefaultMongoDbFactory
 from pip_services3_rpc.build.DefaultRpcFactory import DefaultRpcFactory
 
-from src.build.ClientFacadeFactory import ClientFacadeFactory
-from src.build.FacadeFactory import FacadeFactory
-from src.build.ServiceFacadeFactory import ServiceFacadeFactory
+from pip_facades_sample_python.build.ClientFacadeFactory import ClientFacadeFactory
+from pip_facades_sample_python.build.FacadeFactory import FacadeFactory
+from pip_facades_sample_python.build.ServiceFacadeFactory import ServiceFacadeFactory
 from pip_beacons_sample_python.clients.version1.BeaconsDirectClientV1 import BeaconsDirectClientV1
 from pip_beacons_sample_python.logic import BeaconsController
 from pip_beacons_sample_python.persistence.BeaconsFilePersistence import BeaconsFilePersistence
-from src.services.version1.FacadeServiceV1 import FacadeServiceV1
+from pip_facades_sample_python.services.version1.FacadeServiceV1 import FacadeServiceV1
 
 
 class ReferencesTest(ManagedReferences):

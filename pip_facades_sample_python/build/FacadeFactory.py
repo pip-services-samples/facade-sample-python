@@ -3,7 +3,7 @@
 from pip_services3_components.build.Factory import Factory
 from pip_services3_commons.refer.Descriptor import Descriptor
 
-from src.services.version1.FacadeServiceV1 import FacadeServiceV1
+from pip_facades_sample_python.services.version1.FacadeServiceV1 import FacadeServiceV1
 
 
 class FacadeFactory(Factory):

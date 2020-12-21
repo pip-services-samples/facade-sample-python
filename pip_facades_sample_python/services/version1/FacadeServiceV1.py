@@ -3,7 +3,7 @@
 from pip_services3_rpc.services.RestService import RestService
 from pip_services3_rpc.services.AboutOperations import AboutOperations
 
-from src.operations.version1.BeaconsOperations import BeaconsOperations
+from pip_facades_sample_python.operations.version1.BeaconsOperations import BeaconsOperations
 
 
 class FacadeServiceV1(RestService):

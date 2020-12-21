@@ -6,7 +6,7 @@ import sys
 # add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-from src.container.FacadeProcess import FacadeProcess
+from pip_facades_sample_python.container.FacadeProcess import FacadeProcess
 
 try:
     FacadeProcess().run()
