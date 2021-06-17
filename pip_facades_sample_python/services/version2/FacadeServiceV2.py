@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import IReferences
 from pip_services3_rpc.services.AboutOperations import AboutOperations
@@ -8,20 +9,21 @@ from pip_facades_sample_python.operations.version1.BeaconsOperationsV1 import Be
 from pip_facades_sample_python.operations.version1.InvitationsOperationsV1 import InvitationsOperationsV1
 from pip_facades_sample_python.operations.version1.SessionsOperationsV1 import SessionsOperationsV1
 from pip_facades_sample_python.operations.version1.SitesOperationsV1 import SitesOperationsV1
+from pip_facades_sample_python.operations.version2.BeaconsOperationsV2 import BeaconsOperationsV2
 from pip_facades_sample_python.services.version1.AuthorizerV1 import AuthorizerV1
 
 
-class FacadeServiceV1(RestService):
+class FacadeServiceV2(RestService):
 
     def __init__(self):
-        super(FacadeServiceV1, self).__init__()
-        self._base_route = 'api/v1'
+        super(FacadeServiceV2, self).__init__()
+        self._base_route = 'api/v2'
 
         self.__about_operations = AboutOperations()
         self.__session_operations = SessionsOperationsV1()
         self.__sites_operations = SitesOperationsV1()
         self.__invitations_operations = InvitationsOperationsV1()
-        self.__beacons_operations = BeaconsOperationsV1()
+        self.__beacons_operations = BeaconsOperationsV2()
 
     def configure(self, config: ConfigParams):
         super().configure(config)
@@ -113,17 +115,17 @@ class FacadeServiceV1(RestService):
                                       lambda site_id, invitation_id: self.__invitations_operations.resend_invitation(site_id, invitation_id))
 
         # Beacon Routes
-        self.register_route_with_auth('get', '/sites/:site_id/beacons', None, auth.site_user(),
-                                      lambda site_id: self.__beacons_operations.get_beacons(site_id))
-        self.register_route_with_auth('get', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.get_beacon(site_id, beacon_id))
-        self.register_route_with_auth('post', '/sites/:site_id/beacons/calculate_position', None, auth.site_user(),
-                                      lambda site_id: self.__beacons_operations.calculate_position(site_id))
-        self.register_route_with_auth('post', '/sites/:site_id/beacons', None, auth.site_user(),
-                                      lambda site_id: self.__beacons_operations.create_beacon(site_id))
-        self.register_route_with_auth('post', '/sites/:site_id/beacons/validate_udi', None, auth.signed(),
-                                      lambda site_id: self.__beacons_operations.validate_beacon_udi(site_id))
-        self.register_route_with_auth('put', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.update_beacon(site_id, beacon_id))
-        self.register_route_with_auth('delete', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.delete_beacon(site_id, beacon_id))
+        self.register_route_with_auth('get', '/sites/:site_id/xbeacons', None, auth.site_user(),
+                                      lambda site_id: self.__beacons_operations.get_beacons_x(site_id))
+        self.register_route_with_auth('get', '/sites/:site_id/xbeacons/:beacon_id', None, auth.site_user(),
+                                      lambda site_id, beacon_id: self.__beacons_operations.get_beacon_x(site_id, beacon_id))
+        self.register_route_with_auth('post', '/sites/:site_id/xbeacons/calculate_position', None, auth.site_user(),
+                                      lambda site_id: self.__beacons_operations.calculate_position_x(site_id))
+        self.register_route_with_auth('post', '/sites/:site_id/xbeacons', None, auth.site_user(),
+                                      lambda site_id: self.__beacons_operations.create_beacon_x(site_id))
+        self.register_route_with_auth('post', '/sites/:site_id/xbeacons/validate_udi', None, auth.signed(),
+                                      lambda site_id: self.__beacons_operations.validate_beacon_udi_x(site_id))
+        self.register_route_with_auth('put', '/sites/:site_id/xbeacons/:beacon_id', None, auth.site_user(),
+                                      lambda site_id, beacon_id: self.__beacons_operations.update_beacon_x(site_id, beacon_id))
+        self.register_route_with_auth('delete', '/sites/:site_id/xbeacons/:beacon_id', None, auth.site_user(),
+                                      lambda site_id, beacon_id: self.__beacons_operations.delete_beacon_x(site_id, beacon_id))

@@ -12,4 +12,3 @@ pip-services3-commons
 pip-services3-components
 pip-services3-container
 pip-services3-rpc
-pip-beacons-sample-python

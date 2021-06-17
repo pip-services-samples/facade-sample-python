@@ -31,7 +31,6 @@ setup(
         'pip-services3-components',
         'pip-services3-container',
         'pip-services3-rpc',
-        'pip-beacons-sample-python'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

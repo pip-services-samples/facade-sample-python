@@ -2,7 +2,7 @@
 # Container info
 - descriptor: "pip-services:container-info:default:default:*"
   name: "nov-facade"
-  description: "Sample facade for NOV"
+  description: "Sample application facade for NOV"
 
 # Console logger
 - descriptor: "pip-services:logger:console:default:*"

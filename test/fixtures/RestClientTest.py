@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import http.client
 import requests
 
 
@@ -35,24 +34,24 @@ class RestClientTest:
     def get_as_user(self, session_id, path):
         self.headers.update({'x-session-id': session_id})
         # self._rest.request('GET', path, headers=self.headers)
-        return self._rest.get(path, headers=self.headers)
+        return self._rest.get(self.url + path, headers=self.headers)
 
     def head_as_user(self, session_id, path):
         self.headers.update({'x-session-id': session_id})
         # self._rest.request('HEAD', path, headers=self.headers)
-        return self._rest.head(path, headers=self.headers)
+        return self._rest.head(self.url + path, headers=self.headers)
 
     def post_as_user(self, session_id, path, params):
         self.headers.update({'x-session-id': session_id})
         # self._rest.request('POST', path, json=params, headers=self.headers)
-        return self._rest.post(path, json=params, headers=self.headers)
+        return self._rest.post(self.url + path, json=params, headers=self.headers)
 
     def put_as_user(self, session_id, path, params):
         self.headers.update({'x-session-id': session_id})
         # self._rest.request('PUT', path, json=params, headers=self.headers)
-        return self._rest.put(path, json=params, headers=self.headers)
+        return self._rest.put(self.url + path, json=params, headers=self.headers)
 
-    def delete_as_user(self, session_id, path, params):
+    def delete_as_user(self, session_id, path):
         self.headers.update({'x-session-id': session_id})
         # self._rest.request('DELETE', path, json=params, headers=self.headers)
-        return self._rest.delete(path, json=params, headers=self.headers)
+        return self._rest.delete(self.url + path, headers=self.headers)

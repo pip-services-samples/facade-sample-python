@@ -1,50 +1,104 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+from typing import List
 
-# from pip_services3_commons.errors import UnauthorizedException
-# from pip_services3_rpc.auth.BasicAuthManager import BasicAuthManager
-# from pip_services3_rpc.auth.RoleAuthManager import RoleAuthManager
-# from pip_services3_rpc.services import HttpResponseSender
+import bottle
+from pip_services3_commons.convert import JsonConverter
+from pip_services3_commons.errors import UnauthorizedException
+from pip_services3_rpc.auth.BasicAuthorizer import BasicAuthorizer
+from pip_services3_rpc.auth.OwnerAuthorizer import OwnerAuthorizer
+from pip_services3_rpc.auth.RoleAuthorizer import RoleAuthorizer
+from pip_services3_rpc.services import HttpResponseSender
 
-# # TODO need add
-# class AuthorizerV1:
-#     basic_auth = BasicAuthManager()
-#     role_auth = RoleAuthManager()
 
-#     # Anybody who entered the system
-#     def anybody(self):
-#         return self.basic_auth.anybody()
+class AuthorizerV1:
 
-#     # Only registered and authenticated users
-#     def signed(self):
-#         return self.role_auth.user_in_role('admin')
+    def __init__(self):
+        self.__basic_auth = BasicAuthorizer()
+        self.__role_auth = RoleAuthorizer()
+        self.__owner_auth = OwnerAuthorizer()
 
-#     # Only the user session owner
-#     def owner(self, req, res, id_param='user_id', ):
-#         user = req.params.get('user')
-#         party_id = req.params.get(id_param)
-#         if user is None:
-#             HttpResponseSender.send_error(
-#                 UnauthorizedException(
-#                     None, 'NOT_SIGNED',
-#                     'User must be signed in to perform this operation'
-#                 ).with_status(401)
-#             )
-#         elif party_id is None:
-#             HttpResponseSender.send_error(
-#                 UnauthorizedException(
-#                     None, 'NO_USER_ID',
-#                     'User id is not defined'
-#                 ).with_status(401)
-#             )
-#         else:
-#             is_owner = party_id == user['id']
+    # Anybody who entered the system
+    def anybody(self):
+        return self.__basic_auth.anybody()
 
-#             if not is_owner:
-#                 HttpResponseSender.send_error(
-#                     UnauthorizedException(
-#                         None, 'NOT_OWNER', 'Only user owner access is allowed'
-#                     ).with_details('user_id', party_id).with_status(403)
-#                 )
-#             else:
-#                 pass
-#                 # next()
+    # Only registered and authenticated users
+    def signed(self):
+        return self.__basic_auth.signed()
+
+    # Only the user session owner
+    def owner(self, id_param: str = 'user_id'):
+        return self.__owner_auth.owner(id_param)
+
+    def owner_or_admin(self, id_param: str = 'user_id'):
+        return self.__owner_auth.owner_or_admin(id_param)
+
+    def site_roles(self, roles: List[str], id_param: str = 'site_id'):
+        def inner():
+            user = bottle.request.user
+            if user is None:
+                return HttpResponseSender.send_error(
+                    UnauthorizedException(
+                        None, 'NOT_SIGNED',
+                        'User must be signed in to perform this operation'
+                    ).with_status(401)
+                )
+            else:
+                site_id = bottle.request.params['kwargs'].get(id_param)
+                authorized = 'admin' in user.roles
+                if site_id is not None and not authorized:
+                    for role in roles:
+                        authorized = authorized or (site_id + ':' + role) in user.roles
+
+                if not authorized:
+                    return HttpResponseSender.send_error(
+                        UnauthorizedException(
+                            None, 'NOT_IN_SITE_ROLE',
+                            'User must be site:' + ' or site:'.join(roles) + ' to perform this operation'
+                        ).with_details('roles', roles).with_status(403)
+                    )
+
+        return inner
+
+    def admin(self):
+        return self.__role_auth.user_in_role('admin')
+
+    def site_admin(self, id_param: str = 'site_id'):
+        return self.site_roles(['admin'], id_param)
+
+    def site_manager(self, id_param: str = 'site_id'):
+        return self.site_roles(['admin', 'manager'], id_param)
+
+    def site_user(self, id_param: str = 'site_id'):
+        return self.site_roles(['admin', 'manager', 'user'], id_param)
+
+    def site_admin_or_owner(self, user_id_param: str = 'user_id', site_id_param: str = 'site_id'):
+        def inner():
+            user = bottle.request.user
+            if user is None:
+                return HttpResponseSender.send_error(
+                    UnauthorizedException(
+                        None, 'NOT_SIGNED',
+                        'User must be signed in to perform this operation'
+                    ).with_status(401))
+
+            else:
+                user_id = dict(bottle.request.query.decode()).get(user_id_param) or JsonConverter.to_json(
+                    bottle.request.json)
+                if user_id is not None and user_id == user.user_id:
+                    # next()
+                    pass
+                else:
+                    site_id = bottle.request.params.get(site_id_param)
+                    authorized = 'admin' in user.roles or site_id + ':admin' in user.roles
+                    if not authorized:
+                        return HttpResponseSender.send_error(
+                            UnauthorizedException(
+                                None, 'NOT_IN_SITE_ROLE',
+                                'User must be site:admin to perform this operation'
+                            ).with_details('roles', ['admin']).with_status(403)
+                        )
+                    else:
+                        # next()
+                        pass
+
+        return inner
