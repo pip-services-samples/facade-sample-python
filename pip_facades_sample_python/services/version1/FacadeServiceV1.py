@@ -67,7 +67,8 @@ class FacadeServiceV1(RestService):
         self.register_route_with_auth('get', '/sessions/:user_id', None, auth.owner_or_admin('user_id'),
                                       lambda user_id: self.__session_operations.get_user_sessions(user_id))
         self.register_route_with_auth('del', '/sessions/:user_id/:session_id', None, auth.owner_or_admin('user_id'),
-                                      lambda user_id, session_id: self.__session_operations.close_session(user_id, session_id))
+                                      lambda user_id, session_id: self.__session_operations.close_session(user_id,
+                                                                                                          session_id))
 
         # Site Routes
         self.register_route_with_auth('get', '/sites', None, auth.signed(),
@@ -95,28 +96,34 @@ class FacadeServiceV1(RestService):
         self.register_route_with_auth('get', '/sites/:site_id/invitations', None, auth.site_user(),
                                       lambda site_id: self.__invitations_operations.get_invitations(site_id))
         self.register_route_with_auth('get', '/sites/:site_id/invitations/:invitation_id', None, auth.site_user(),
-                                      lambda site_id, invitation_id: self.__invitations_operations.get_invitation(site_id, invitation_id))
+                                      lambda site_id, invitation_id: self.__invitations_operations.get_invitation(
+                                          site_id, invitation_id))
         self.register_route_with_auth('post', '/sites/:site_id/invitations', None, auth.signed(),
                                       lambda site_id: self.__invitations_operations.send_invitation(site_id))
         self.register_route_with_auth('post', '/sites/:site_id/invitations/notify', None, auth.site_manager(),
                                       lambda site_id: self.__invitations_operations.notify_invitation(site_id))
         self.register_route_with_auth('delete', '/sites/:site_id/invitations/:invitation_id', None, auth.site_manager(),
-                                      lambda site_id, invitation_id: self.__invitations_operations.delete_invitation(site_id, invitation_id))
+                                      lambda site_id, invitation_id: self.__invitations_operations.delete_invitation(
+                                          site_id, invitation_id))
         self.register_route_with_auth('post', '/sites/:site_id/invitations/:invitation_id/approve', None,
                                       auth.site_manager(),
-                                      lambda site_id, invitation_id: self.__invitations_operations.approve_invitation(site_id, invitation_id))
+                                      lambda site_id, invitation_id: self.__invitations_operations.approve_invitation(
+                                          site_id, invitation_id))
         self.register_route_with_auth('post', '/sites/:site_id/invitations/:invitation_id/deny', None,
                                       auth.site_manager(),
-                                      lambda site_id, invitation_id: self.__invitations_operations.deny_invitation(site_id, invitation_id))
+                                      lambda site_id, invitation_id: self.__invitations_operations.deny_invitation(
+                                          site_id, invitation_id))
         self.register_route_with_auth('post', '/sites/:site_id/invitations/:invitation_id/resend', None,
                                       auth.site_manager(),
-                                      lambda site_id, invitation_id: self.__invitations_operations.resend_invitation(site_id, invitation_id))
+                                      lambda site_id, invitation_id: self.__invitations_operations.resend_invitation(
+                                          site_id, invitation_id))
 
         # Beacon Routes
         self.register_route_with_auth('get', '/sites/:site_id/beacons', None, auth.site_user(),
                                       lambda site_id: self.__beacons_operations.get_beacons(site_id))
         self.register_route_with_auth('get', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.get_beacon(site_id, beacon_id))
+                                      lambda site_id, beacon_id: self.__beacons_operations.get_beacon(site_id,
+                                                                                                      beacon_id))
         self.register_route_with_auth('post', '/sites/:site_id/beacons/calculate_position', None, auth.site_user(),
                                       lambda site_id: self.__beacons_operations.calculate_position(site_id))
         self.register_route_with_auth('post', '/sites/:site_id/beacons', None, auth.site_user(),
@@ -124,6 +131,8 @@ class FacadeServiceV1(RestService):
         self.register_route_with_auth('post', '/sites/:site_id/beacons/validate_udi', None, auth.signed(),
                                       lambda site_id: self.__beacons_operations.validate_beacon_udi(site_id))
         self.register_route_with_auth('put', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.update_beacon(site_id, beacon_id))
+                                      lambda site_id, beacon_id: self.__beacons_operations.update_beacon(site_id,
+                                                                                                         beacon_id))
         self.register_route_with_auth('delete', '/sites/:site_id/beacons/:beacon_id', None, auth.site_user(),
-                                      lambda site_id, beacon_id: self.__beacons_operations.delete_beacon(site_id, beacon_id))
+                                      lambda site_id, beacon_id: self.__beacons_operations.delete_beacon(site_id,
+                                                                                                         beacon_id))

@@ -7,7 +7,6 @@ from pip_services3_commons.errors import UnauthorizedException
 from pip_services3_rpc.auth.BasicAuthorizer import BasicAuthorizer
 from pip_services3_rpc.auth.OwnerAuthorizer import OwnerAuthorizer
 from pip_services3_rpc.auth.RoleAuthorizer import RoleAuthorizer
-from pip_services3_rpc.services import HttpResponseSender
 
 
 class AuthorizerV1:
@@ -34,15 +33,16 @@ class AuthorizerV1:
 
     def site_roles(self, roles: List[str], id_param: str = 'site_id'):
         def inner():
-            user = bottle.request.user
+            user = getattr(bottle.request, 'user', None)
+
             if user is None:
-                return HttpResponseSender.send_error(
-                    UnauthorizedException(
-                        None, 'NOT_SIGNED',
-                        'User must be signed in to perform this operation'
-                    ).with_status(401)
-                )
+                raise UnauthorizedException(
+                    None, 'NOT_SIGNED',
+                    'User must be signed in to perform this operation'
+                ).with_status(401)
+
             else:
+                user.roles = getattr(user, 'roles', False) or []
                 site_id = bottle.request.params['kwargs'].get(id_param)
                 authorized = 'admin' in user.roles
                 if site_id is not None and not authorized:
@@ -50,12 +50,10 @@ class AuthorizerV1:
                         authorized = authorized or (site_id + ':' + role) in user.roles
 
                 if not authorized:
-                    return HttpResponseSender.send_error(
-                        UnauthorizedException(
-                            None, 'NOT_IN_SITE_ROLE',
-                            'User must be site:' + ' or site:'.join(roles) + ' to perform this operation'
-                        ).with_details('roles', roles).with_status(403)
-                    )
+                    raise UnauthorizedException(
+                        None, 'NOT_IN_SITE_ROLE',
+                        'User must be site:' + ' or site:'.join(roles) + ' to perform this operation'
+                    ).with_details('roles', roles).with_status(403)
 
         return inner
 
@@ -75,30 +73,23 @@ class AuthorizerV1:
         def inner():
             user = bottle.request.user
             if user is None:
-                return HttpResponseSender.send_error(
-                    UnauthorizedException(
-                        None, 'NOT_SIGNED',
-                        'User must be signed in to perform this operation'
-                    ).with_status(401))
+                raise UnauthorizedException(
+                    None, 'NOT_SIGNED',
+                    'User must be signed in to perform this operation'
+                ).with_status(401)
 
             else:
                 user_id = dict(bottle.request.query.decode()).get(user_id_param) or JsonConverter.to_json(
                     bottle.request.json)
                 if user_id is not None and user_id == user.user_id:
-                    # next()
-                    pass
+                    return
                 else:
                     site_id = bottle.request.params.get(site_id_param)
                     authorized = 'admin' in user.roles or site_id + ':admin' in user.roles
                     if not authorized:
-                        return HttpResponseSender.send_error(
-                            UnauthorizedException(
-                                None, 'NOT_IN_SITE_ROLE',
-                                'User must be site:admin to perform this operation'
-                            ).with_details('roles', ['admin']).with_status(403)
-                        )
-                    else:
-                        # next()
-                        pass
+                        raise UnauthorizedException(
+                            None, 'NOT_IN_SITE_ROLE',
+                            'User must be site:admin to perform this operation'
+                        ).with_details('roles', ['admin']).with_status(403)
 
         return inner

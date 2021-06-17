@@ -44,7 +44,7 @@ class SitesOperationsV1(RestOperations):
         filter_params = self._get_filter_params()
         paging = self._get_paging_params()
 
-        roles: List[str] = [] if not bottle.request.user else bottle.request.user.roles or []
+        roles: List[str] = [] if not hasattr(bottle.request, 'user') else bottle.request.user.roles or []
         site_ids: List[str] = []
 
         # Get authorized site ids
@@ -60,7 +60,7 @@ class SitesOperationsV1(RestOperations):
 
         # Is user has no sites then exit
         if len(site_ids) == 0:
-            return JsonConverter.to_json(DataPage([]))
+            return self._send_result(DataPage([]))
 
         filter_params.set_as_object('ids', site_ids)
 
@@ -92,11 +92,12 @@ class SitesOperationsV1(RestOperations):
             site = self.__sites_client.create_site(None, site)
 
             # Assign permissions to the owner
-            if self.__roles_client is not None and hasattr(bottle.request, 'user') and bottle.request.user.id is not None:
+            if self.__roles_client is not None and hasattr(bottle.request,
+                                                           'user') and bottle.request.user.id is not None:
                 self.__roles_client.grant_roles(None, bottle.request.user.id, [site.id + ':admin'])
 
             # Update current user session
-            if hasattr(bottle.request, 'user')and hasattr(bottle.request, 'session_id'):
+            if hasattr(bottle.request, 'user') and hasattr(bottle.request, 'session_id'):
                 user = bottle.request.user
                 user.roles = user.roles or []
                 user.roles.append(site.id + ':admin')
@@ -106,7 +107,7 @@ class SitesOperationsV1(RestOperations):
 
                 self.__sessions_client.update_session_user(None, bottle.request.session_id, user)
 
-            return JsonConverter.to_json(site)
+            return self._send_result(site)
 
         except Exception as err:
             return self._send_error(err)
@@ -132,7 +133,7 @@ class SitesOperationsV1(RestOperations):
 
                 self.__sessions_client.update_session_user(None, bottle.request.session_id, user)
 
-            return JsonConverter.to_json(site)
+            return self._send_result(site)
         except Exception as err:
             self._send_error(err)
 
@@ -143,7 +144,8 @@ class SitesOperationsV1(RestOperations):
     def remove_site(self, site_id):
         try:
             # Assign permissions to the owner
-            if self.__roles_client is not None and hasattr(bottle.request, 'user') and bottle.request.user.id is not None:
+            if self.__roles_client is not None and hasattr(bottle.request,
+                                                           'user') and bottle.request.user.id is not None:
                 self.__roles_client.revoke_roles(
                     None,
                     bottle.request.user.id,
@@ -176,6 +178,6 @@ class SitesOperationsV1(RestOperations):
         site = self.__sites_client.get_site_by_code(None, code)
 
         if site:
-            return JsonConverter.to_json(site.id)
+            return self._send_result(site.id)
 
-        return ''
+        return self._send_result()

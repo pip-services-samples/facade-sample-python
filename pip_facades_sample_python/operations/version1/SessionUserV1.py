@@ -9,7 +9,6 @@ class SessionUserV1:
                  theme: str = None, roles: List[str] = None, change_pwd_time: datetime.datetime = None,
                  sites: List[dict] = None, settings: Any = None, custom_hdr: Any = None,
                  custom_dat: Any = None):
-
         # Identification
         self.id = id
         self.login = login

@@ -88,7 +88,7 @@ class SessionsOperationsV1(RestOperations):
             try:
                 session = self.__sessions_client.get_session_by_id('facade', session_id)
                 if session is None:
-                    err = UnauthorizedException(
+                    raise UnauthorizedException(
                         'facade',
                         'SESSION_NOT_FOUND',
                         'Session invalid or already expired.'
@@ -272,7 +272,7 @@ class SessionsOperationsV1(RestOperations):
 
             return self.open_session(account, roles)
         except Exception as err:
-            return self.open_session(account, roles)
+            return self._send_error(err)
 
     def signout(self):
         if hasattr(bottle.request, 'session_id'):
