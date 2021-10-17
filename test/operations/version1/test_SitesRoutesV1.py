@@ -102,7 +102,7 @@ class TestSitesOperationsV1:
                                           '/api/v1/sites/' + site1.id + '/generate_code',
                                           {}, )
 
-        assert JsonConverter.from_json(TypeCode.Map, response.content) is not None
+        assert len(response.content.decode('utf-8')) > 0
 
         # Update the site
         site1.description = 'Updated Content 1'
