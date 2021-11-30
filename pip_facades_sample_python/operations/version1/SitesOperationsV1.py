@@ -24,7 +24,7 @@ class SitesOperationsV1(RestOperations):
 
         self._dependency_resolver.put('roles', Descriptor('pip-services-roles', 'client', '*', '*', '1.0'))
         self._dependency_resolver.put('sessions', Descriptor('pip-services-sessions', 'client', '*', '*', '1.0'))
-        self._dependency_resolver.put('sites', Descriptor('nov-services-sites', 'client', '*', '*', '1.0'))
+        self._dependency_resolver.put('sites', Descriptor('pip-services-sites', 'client', '*', '*', '1.0'))
 
     def set_references(self, references: IReferences):
         super().set_references(references)

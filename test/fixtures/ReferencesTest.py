@@ -53,7 +53,7 @@ class ReferencesTest(ManagedReferences):
         self.put(Descriptor('pip-services-roles', 'client', 'memory', 'default', '*'), RolesMemoryClientV1())
         self.put(Descriptor('pip-services-emailsettings', 'client', 'memory', 'default', '*'),
                  EmailSettingsMemoryClientV1())
-        self.put(Descriptor('nov-services-sites', 'client', 'direct', 'memory', '*'), SitesMemoryClientV1())
+        self.put(Descriptor('pip-services-sites', 'client', 'direct', 'memory', '*'), SitesMemoryClientV1())
 
     def __configure_service(self):
         # Configure Facade service
@@ -104,7 +104,7 @@ class ReferencesTest(ManagedReferences):
         accounts_client.create_account(None, user_2_account)
 
         # Create test site(s)
-        sites_client: ISitesClientV1 = self.get_one_required(Descriptor('nov-services-sites', 'client', '*', '*', '*'))
+        sites_client: ISitesClientV1 = self.get_one_required(Descriptor('pip-services-sites', 'client', '*', '*', '*'))
 
         site1 = SiteV1(
             id=TestSites.Site1Id,

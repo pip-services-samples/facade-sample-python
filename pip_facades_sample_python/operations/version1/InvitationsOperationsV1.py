@@ -17,7 +17,7 @@ class InvitationsOperationsV1(RestOperations):
         super().__init__()
         self.__invitations_client: IInvitationsClientV1 = None
 
-        self._dependency_resolver.put('invitations', Descriptor('nov-services-invitations', 'client', '*', '*', '1.0'))
+        self._dependency_resolver.put('invitations', Descriptor('pip-services-invitations', 'client', '*', '*', '1.0'))
 
     def set_references(self, references: IReferences):
         super().set_references(references)

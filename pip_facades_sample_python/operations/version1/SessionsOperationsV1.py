@@ -55,8 +55,8 @@ class SessionsOperationsV1(RestOperations):
         self._dependency_resolver.put('emailsettings',
                                       Descriptor('pip-services-emailsettings', 'client', '*', '*', '1.0'))
         self._dependency_resolver.put('sessions', Descriptor('pip-services-sessions', 'client', '*', '*', '1.0'))
-        self._dependency_resolver.put('sites', Descriptor('nov-services-sites', 'client', '*', '*', '1.0'))
-        self._dependency_resolver.put('invitations', Descriptor('nov-services-invitations', 'client', '*', '*', '1.0'))
+        self._dependency_resolver.put('sites', Descriptor('pip-services-sites', 'client', '*', '*', '1.0'))
+        self._dependency_resolver.put('invitations', Descriptor('pip-services-invitations', 'client', '*', '*', '1.0'))
 
     def configure(self, config: ConfigParams):
         config = config.set_defaults(SessionsOperationsV1.__default_config)

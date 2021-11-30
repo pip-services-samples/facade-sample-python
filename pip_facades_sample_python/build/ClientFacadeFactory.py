@@ -21,9 +21,9 @@ class ClientFacadeFactory(Factory):
     RolesMemoryClientV1Descriptor = Descriptor("pip-services-roles", "client", "memory", "*", "1.0")
     SessionsMemoryClientV1Descriptor = Descriptor("pip-services-sessions", "client", "memory", "*", "1.0")
     EmailSettingsMemoryClientV1Descriptor = Descriptor("pip-services-emailsettings", "client", "memory", "*", "1.0")
-    SitesMemoryClientV1Descriptor = Descriptor("nov-services-sites", "client", "memory", "*", "1.0")
-    InvitationsNullClientV1Descriptor = Descriptor("nov-services-invitations", "client", "null", "*", "1.0")
-    BeaconsMemoryClientV1Descriptor = Descriptor("nov-services-beacons", "client", "memory", "*", "1.0")
+    SitesMemoryClientV1Descriptor = Descriptor("pip-services-sites", "client", "memory", "*", "1.0")
+    InvitationsNullClientV1Descriptor = Descriptor("pip-services-invitations", "client", "null", "*", "1.0")
+    BeaconsMemoryClientV1Descriptor = Descriptor("beacons", "client", "memory", "*", "1.0")
 
     def __init__(self):
         super(ClientFacadeFactory, self).__init__()

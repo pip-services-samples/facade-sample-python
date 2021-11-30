@@ -17,7 +17,7 @@ class BeaconsOperationsV2(RestOperations):
         super(BeaconsOperationsV2, self).__init__()
         self.__beacons_client: IBeaconsClientV1 = None
         self._dependency_resolver.put('beacons',
-                                      Descriptor('nov-services-beacons', 'client', '*', '*', '1.0'))
+                                      Descriptor('beacons', 'client', '*', '*', '1.0'))
 
     def set_references(self, references: IReferences):
         super().set_references(references)
