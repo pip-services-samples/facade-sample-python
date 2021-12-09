@@ -6,7 +6,7 @@ from ..build.ClientFacadeFactory import ClientFacadeFactory
 from ..build.FacadeFactory import FacadeFactory
 
 
-# from pip_services3_mongodb.build.DefaultMongoDbFactory import DefaultMongoDbFactory
+# from pip_services3_mongodb.build import DefaultMongoDbFactory
 
 
 class FacadeProcess(ProcessContainer):

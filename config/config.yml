@@ -63,6 +63,9 @@
 # Facade API V1
 - descriptor: "pip-facades-example:service:http:default:1.0"
 
+# Facade API V2
+- descriptor: "pip-facades-example:service:http:default:2.0"
+
 # Hearbeat service
 - descriptor: "pip-services:heartbeat-service:http:default:1.0"
 

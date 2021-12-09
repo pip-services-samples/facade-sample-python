@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # run 
-CMD [ "python", "./bin/run.py" ]
+CMD [ "python", "./bin/main.py" ]
